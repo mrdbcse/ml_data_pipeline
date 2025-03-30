@@ -7,6 +7,7 @@ from urllib.parse import urlparse
 import mlflow
 import pandas as pd
 import yaml
+from dotenv import load_dotenv
 from mlflow.models import infer_signature
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
@@ -14,12 +15,8 @@ from sklearn.model_selection import GridSearchCV, train_test_split
 
 log = logging.getLogger(name="__name__")
 log.setLevel(level=logging.DEBUG)
+load_dotenv()
 
-os.environ["MLFLOW_TRACKING_URI"] = (
-    "https://dagshub.com/mrdbcse/full-stack-ai-ml.mlflow"
-)
-os.environ["MLFLOW_TRACKING_USERNAME"] = "mrdbcse"
-os.environ["MLFLOW_TRACKING_PASSWORD"] = "d167aced41d29cbf53107aca9a8a7f6656eb11e9"
 
 params = yaml.safe_load(open("params.yaml"))["train"]
 log.info(f"Params: {params}")
@@ -44,7 +41,7 @@ def train(data_path: str, model_path: str) -> None:
     X = data.drop(columns=["Outcome"])
     y = data["Outcome"]
 
-    mlflow.set_tracking_uri(os.environ["MLFLOW_TRACKING_URI"])
+    mlflow.set_tracking_uri(os.getenv("MLFLOW_TRACKING_URI"))
 
     with mlflow.start_run():
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)

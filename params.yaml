@@ -1,10 +1,10 @@
 preprocess:
-  input: projects/ml_pipeline/data/raw/diabetes.csv
-  output: projects/ml_pipeline/data/processed/diabetes.csv
+  input: data/raw/diabetes.csv
+  output: data/processed/diabetes.csv
 
 train:
-  data: projects/ml_pipeline/data/raw/diabetes.csv
-  model: projects/ml_pipeline/models/model.pkl
+  data: data/raw/diabetes.csv
+  model: models/model.pkl
   random_state: 42
   n_estimators: 100
   max_depth: 5
