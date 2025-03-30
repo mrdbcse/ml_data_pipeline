@@ -1,0 +1,28 @@
+dvc stage add -n preprocess ^
+    -p preprocess.input,preprocess.output ^
+    -d projects/ml_pipeline/src/preprocess.py ^
+    -d projects/ml_pipeline/data/raw/diabetes.csv ^
+    -o projects/ml_pipeline/data/processed/diabetes.csv ^
+    python projects/ml_pipeline/src/preprocess.py
+---------------------------------------------------------------
+
+dvc stage add -n train ^
+    -p train.data,train.model,train.random_state,train.n_estimators,train.max_depth ^
+    -d projects/ml_pipeline/src/train.py ^
+    -d projects/ml_pipeline/data/raw/diabetes.csv ^
+    -o projects/ml_pipeline/models/model.pkl ^
+    python projects/ml_pipeline/src/train.py
+
+
+---------------------------------------------------------------
+
+dvc stage add -n evaluate ^
+    -d projects/ml_pipeline/src/evaluate.py ^
+    -d projects/ml_pipeline/data/raw/diabetes.csv ^
+    -d projects/ml_pipeline/models/model.pkl ^
+    python projects/ml_pipeline/src/evaluate.py
+
+
+---------------------------------------------------------------
+
+dvc repro
